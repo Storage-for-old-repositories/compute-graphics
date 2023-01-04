@@ -1,18 +1,33 @@
+import Position2D from "./src/position2d.js";
+import Position3D from "./src/position3d.js";
+import ColorRGBA from "./src/colorRGBA.js";
+
 //#region Init data
 const canvas = document.getElementById("view");
 const context = canvas.getContext("2d");
 
-const image = context.createImageData(canvas.width, canvas.height);
-const data = image.data;
+let image = context.createImageData(canvas.width, canvas.height);
+let data = image.data;
 
-const coordinateTransformationData = {
-  x: canvas.width / 2,
-  y: canvas.height / 2,
-};
+let __w = canvas.width;
+let __h = canvas.height;
 
 //#endregion
 
 //#region Methods for work data
+
+/// Buffers
+///
+
+function checkResizeCanvas() {
+  if (__w !== canvas.width || __h !== canvas.height) {
+    __w = canvas.width;
+    __h = canvas.height;
+
+    image = context.createImageData(canvas.width, canvas.height);
+    data = image.data;
+  }
+}
 
 /// Getters
 ///
@@ -28,12 +43,14 @@ function getViewH() {
 /// Checks
 ///
 
-function checkPixelOutborder(x, y) {
+function checkPointOutborderView(p2d) {
+  const [x, y] = p2d.xy;
+
   if (x < 0 || y < 0) {
     return true;
   }
 
-  if (x > canvas.width - 1 || y > canvas.height - 1) {
+  if (x > getViewW() - 1 || y > getViewH() - 1) {
     return true;
   }
 
@@ -43,26 +60,21 @@ function checkPixelOutborder(x, y) {
 /// Transform coordinates
 ///
 
-function transPlaneCoordOnViewX(x) {
-  return coordinateTransformationData.x + x;
-}
-
-function transPlaneCoordOnViewY(y) {
-  return coordinateTransformationData.y - y;
+function transPlaneCoordOnView(p2d) {
+  return new Position2D(getViewW() / 2 + p2d.x, getViewH() / 2 - p2d.y);
 }
 
 /// Raw draw
 ///
 
-function rawPutPixel(x, y, color) {
-  const roundedX = Math.round(x);
-  const roundedY = Math.round(y);
+function rawPutPixel(p2d, color) {
+  const p2dRound = p2d.map(Math.round);
 
-  if (checkPixelOutborder(roundedX, roundedY)) {
+  if (checkPointOutborderView(p2dRound)) {
     return false;
   }
 
-  const index = 4 * (canvas.width * roundedY + roundedX);
+  const index = 4 * (getViewW() * p2dRound.y + p2dRound.x);
 
   data[index + 0] = color.r;
   data[index + 1] = color.g;
@@ -75,61 +87,8 @@ function rawPutPixel(x, y, color) {
 /// Draw
 ///
 
-function putPixel(x, y, color) {
-  return rawPutPixel(
-    transPlaneCoordOnViewX(x),
-    transPlaneCoordOnViewY(y),
-    color
-  );
-}
-
-/// Color
-///
-
-class ColorRGBA {
-  constructor(r = 0, g = 0, b = 0, a = 255) {
-    this["#r"] = clamp(r, 0, 255);
-    this["#g"] = clamp(g, 0, 255);
-    this["#b"] = clamp(b, 0, 255);
-    this["#a"] = clamp(a, 0, 255);
-  }
-
-  static buildFromArr([r, g, b, a]) {
-    return new ColorRGBA(r, g, b, a);
-  }
-
-  static buildFromStc({ r, g, b, a }) {
-    return new ColorRGBA(r, g, b, a);
-  }
-
-  get r() {
-    return this["#r"];
-  }
-
-  get g() {
-    return this["#g"];
-  }
-
-  get b() {
-    return this["#b"];
-  }
-
-  get a() {
-    return this["#a"];
-  }
-
-  get rgba() {
-    return [this.r, this.g, this.b, this.a];
-  }
-
-  addIntensity(k) {
-    return ColorRGBA.buildFromArr(this.rgba.map((c) => c * k));
-  }
-
-  addColor(color) {
-    const [r, g, b, a] = color.rgba();
-    return new ColorRGBA(this.r + r, this.g + g, this.b + b, this.a + a);
-  }
+function putPixel(p2d, color) {
+  return rawPutPixel(transPlaneCoordOnView(p2d), color);
 }
 
 /// Other
@@ -139,22 +98,32 @@ function swapBuffer() {
   context.putImageData(image, 0, 0);
 }
 
-function clamp(x, min, max) {
-  return Math.max(min, Math.min(max, x));
-}
+/// Transform 3d
+///
 
 //#endregion
 
 void (async () => {
+  const frameRender = () => {
+    checkResizeCanvas();
+
+    render(getViewW(), getViewH());
+
+    swapBuffer();
+  };
+
+  frameRender();
+})();
+
+/// Render
+///
+
+function render(width, height) {
   /**
-   *
+   * Example
    */
 
-  // Example
-
   for (let i = 0; i < 100; ++i) {
-    putPixel(i, -i, ColorRGBA.buildFromStc({ r: 255 }));
+    putPixel(new Position2D(i, -i), ColorRGBA.buildFromStc({ r: 255 }));
   }
-
-  swapBuffer();
-})();
+}
