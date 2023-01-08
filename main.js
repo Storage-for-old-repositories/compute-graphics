@@ -139,6 +139,11 @@ void (async () => {
   };
 
   frameRender();
+
+  // setInterval(() => {
+  //   camera.distance += 0.1;
+  //   frameRender();
+  // }, 1000 / 24);
 })();
 
 /// Render

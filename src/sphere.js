@@ -1,4 +1,3 @@
-import Position3D from "./position3d.js";
 
 class Sphere {
   #position;
@@ -20,9 +19,9 @@ class Sphere {
   intersectRay(origin, direction) {
     const oc = origin.sub(this.#position);
 
-    const k1 = direction.scalarProduct(direction);
-    const k2 = 2 * oc.scalarProduct(direction);
-    const k3 = oc.scalarProduct(oc) - this.#r ** 2;
+    const k1 = direction.dotProduct(direction);
+    const k2 = 2 * oc.dotProduct(direction);
+    const k3 = oc.dotProduct(oc) - this.#r ** 2;
 
     const discriminant = k2 ** 2 - 4 * k1 * k3;
 

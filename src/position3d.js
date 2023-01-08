@@ -69,7 +69,7 @@ class Position3D {
     return this.multScalar(this.length());
   }
 
-  scalarProduct(p3d) {
+  dotProduct(p3d) {
     return this.#x * p3d.x + this.#y * p3d.y + this.#z * p3d.z;
   }
 
