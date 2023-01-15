@@ -183,6 +183,8 @@ function render(width, height) {
   const minT = 1;
   const maxT = Infinity;
 
+  // Я написал алгоритм провервки пересечения окружности и луча в Godot - ray_collision_circle
+
   for (let i = wb; i <= we; ++i) {
     for (let j = hb; j <= he; ++j) {
       const direction = coordViewToSpace(new Position2D(i, j));
