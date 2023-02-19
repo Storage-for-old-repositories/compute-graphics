@@ -1,6 +1,5 @@
 extends Node2D
 
-# Константы
 const CIRCLE = {
 	"position": Vector2(500, 315),
 	"radius": 45,
@@ -16,17 +15,17 @@ func draw_ray(pos: Vector2, dir: float, color: Color, width: float = 1.0, antial
 
 # Функция решения квадратного уравнения
 func quadratic_equation(a: float, b: float, c: float) -> Array:
+	var discriminant = b * b - 4 * a * c
+	var sign_discriminant = sign(discriminant)
 	
-	var D = b * b - 4 * a * c;
-	
-	if sign(D) == -1:
+	if sign_discriminant == -1:
 		return []
 	
-	var rD = sqrt(D)
-	var x = (-b + rD) / 2 * a
-	var y = (-b - rD) / 2 * a
+	var root_discriminant = sqrt(discriminant)
+	var x1 = (-b + root_discriminant) / 2 * a
+	var x2 = (-b - root_discriminant) / 2 * a
 	
-	return [x, y]
+	return [x1, x2]
 
 # 
 var mouse_point: Vector2
@@ -42,7 +41,7 @@ func _physics_process(delta):
 	direction = rad2deg(ray_direction.angle())
 	
 	update()
-
+	
 func _draw():
 	draw_circle(CIRCLE.position, CIRCLE.radius, Color(255, 0, 0))
 	draw_ray(RAY.position, direction, Color(0, 255, 0))

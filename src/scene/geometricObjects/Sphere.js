@@ -1,19 +1,30 @@
+import Vector3D from "./Vector3D";
 
-class Sphere {
+export class Sphere {
+  /** @type {Vector3D} */
   #position;
-  #r = 0;
+  #radius = 0;
 
-  constructor(p3d, r) {
-    this.#position = p3d;
-    this.#r = Math.max(0, r);
+  constructor(radius, vector3D) {
+    this.#radius = radius;
+    this.#position = vector3D;
+  }
+
+  /**
+   * 
+   * @param { { radius: number; position: Vector3D } } componentsSphere 
+   * @returns 
+   */
+  static createSphere({ radius, position }) {
+    return new Sphere(radius, position);
   }
 
   get position() {
     return this.#position;
   }
 
-  get r() {
-    return this.#r;
+  get radius() {
+    return this.#radius;
   }
 
   intersectRay(origin, direction) {
@@ -35,5 +46,3 @@ class Sphere {
     return [t1, t2];
   }
 }
-
-export default Sphere;

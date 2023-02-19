@@ -1,7 +1,4 @@
-import Position2D from "./src/position2d.js";
-import Position3D from "./src/position3d.js";
-import ColorRGBA from "./src/colorRGBA.js";
-import Sphere from "./src/sphere.js";
+import { Vector2D, Vector3D, RGBA, Sphere } from "./src";
 
 //#region Init data
 
@@ -178,6 +175,12 @@ function render(width, height) {
       new Sphere(new Position3D(-2, 0, 4), 1),
       ColorRGBA.buildFromStc({ g: 255 }),
     ],
+  ];
+
+  const lights = [
+    { type: "ambient", intensity: 0.2 },
+    { type: "point", intensity: 0.6, position: new Position3D(2, 1, 0) },
+    { type: "direction", intensity: 0.2, direction: new Position3D(1, 4, 4) },
   ];
 
   const minT = 1;
