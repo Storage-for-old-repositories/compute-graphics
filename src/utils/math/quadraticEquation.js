@@ -1,10 +1,9 @@
-
 /**
- * 
- * @param {number} a 
- * @param {number} b 
- * @param {number} c 
- * @returns 
+ *
+ * @param {number} a
+ * @param {number} b
+ * @param {number} c
+ * @returns
  */
 export const quadraticEquationSolve = (a, b, c) => {
   const discriminant = _calculateDiscriminant(a, b, c);
@@ -51,5 +50,5 @@ const _calculateCountRoots = (discriminant) => {
  * @param {number} distance
  */
 const _calculateRoot = (a, b, distance) => {
-  return ((-b + distance) / 2) * a;
+  return (-b + distance) / (2 * a);
 };
