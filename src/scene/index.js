@@ -1,1 +1,1 @@
-export * from './geometricObjects';
+export * from './geometricObjects3D';

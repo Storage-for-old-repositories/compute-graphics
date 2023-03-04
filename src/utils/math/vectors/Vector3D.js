@@ -11,30 +11,21 @@ export class Vector3D {
 
   /**
    *
+   * @param {number} x
+   * @param {number} y
+   * @param {number} z
+   * @returns
+   */
+  static create(x, y, z) {
+    return new Vector3D(x, y, z);
+  }
+
+  /**
+   *
    * @param {number} scalar
    */
   static createFromScalar(scalar) {
-    return Vector3D._createVector3D(scalar, scalar, scalar);
-  }
-
-  /**
-   *
-   * @param { [number, number, number] } xyTuple
-   */
-  static createFromXYZTuple([x, y, z]) {
-    return Vector3D._createVector3D(x, y, z);
-  }
-
-  /**
-   *
-   * @param { { x: number; y: number; z: number } } xyzComponents
-   */
-  static createFromXYComponents({ x, y, z }) {
-    return Vector3D._createVector3D(x, y, z);
-  }
-
-  static _createVector3D(x, y, z) {
-    return new Vector3D(x, y, z);
+    return new Vector3D(scalar, scalar, scalar);
   }
 
   get x() {
@@ -49,24 +40,12 @@ export class Vector3D {
     return this.#z;
   }
 
-  get xyzTuple() {
-    return [this.#x, this.#y, this.#z];
-  }
-
-  get xyzComponents() {
-    return {
-      x: this.x,
-      y: this.y,
-      z: this.z,
-    };
-  }
-
   /**
    *
    * @param {Vector3D} vector3D
    */
   addVector3D(vector3D) {
-    return Vector3D._createVector3D(
+    return Vector3D.create(
       this.#x + vector3D.x,
       this.#y + vector3D.y,
       this.#z + vector3D.z
@@ -78,7 +57,7 @@ export class Vector3D {
    * @param {Vector3D} vector3D
    */
   subVector3D(vector3D) {
-    return Vector3D._createVector3D(
+    return Vector3D.create(
       this.#x - vector3D.x,
       this.#y - vector3D.y,
       this.#z - vector3D.z
@@ -90,7 +69,7 @@ export class Vector3D {
    * @param {number} scalar
    */
   addScalar(scalar) {
-    return Vector3D._createVector3D(
+    return Vector3D.create(
       this.#x + scalar,
       this.#y + scalar,
       this.#z + scalar
@@ -102,7 +81,7 @@ export class Vector3D {
    * @param {number} scalar
    */
   subScalar(scalar) {
-    return Vector3D._createVector3D(
+    return Vector3D.create(
       this.#x - scalar,
       this.#y - scalar,
       this.#z + scalar
@@ -114,7 +93,7 @@ export class Vector3D {
    * @param {number} scalar
    */
   multiplicateScalar(scalar) {
-    return Vector3D._createVector3D(
+    return Vector3D.create(
       this.#x * scalar,
       this.#y * scalar,
       this.#z * scalar
@@ -123,29 +102,37 @@ export class Vector3D {
 
   /**
    *
-   * @param {(component: number) => number} mapper
+   * @param {number} scalar
    */
-  mapComponents(mapper) {
-    return Vector3D._createVector3D(
-      mapper(this.#x),
-      mapper(this.#y),
-      mapper(this.#z)
+  divideScalar(scalar) {
+    return Vector3D.create(
+      this.#x / scalar,
+      this.#y / scalar,
+      this.#z / scalar
     );
-  }
-
-  length() {
-    return Math.sqrt(this.#x ** 2 + this.#y ** 2 + this.#z ** 2);
-  }
-
-  normalize() {
-    return this.multiplicateScalar(this.length());
   }
 
   /**
    *
+   * @param {(component: number) => number} mapper
+   */
+  mapComponents(mapper) {
+    return Vector3D.create(mapper(this.#x), mapper(this.#y), mapper(this.#z));
+  }
+
+    /**
+   *
    * @param {Vector3D} vector3D
    */
-  dotProduct(vector3D) {
-    return this.#x * vector3D.x + this.#y * vector3D.y + this.#z * vector3D.z;
+    dotProduct(vector3D) {
+      return this.#x * vector3D.x + this.#y * vector3D.y + this.#z * vector3D.z;
+    }
+
+  length() {
+    return Math.sqrt(this.dotProduct(this));
+  }
+
+  normalize() {
+    return this.divideScalar(this.length());
   }
 }

@@ -1,5 +1,7 @@
 import { Vector2D, Vector3D, RGBA, Sphere } from "./src";
 
+// TODO: refactor this file
+
 //#region Init data
 
 const canvas = document.getElementById("view");

@@ -16,43 +16,33 @@ export class RGBA {
     this.#a = a;
   }
 
-  static _createRGBA(r, g, b, a) {
+  static create(r, g, b, a) {
     return new RGBA(
-      RGBA._channelWrapOrLower(r),
-      RGBA._channelWrapOrLower(g),
-      RGBA._channelWrapOrLower(b),
-      RGBA._channelWrapOrUpper(a)
+      RGBA.#channelWrapOrLower(r),
+      RGBA.#channelWrapOrLower(g),
+      RGBA.#channelWrapOrLower(b),
+      RGBA.#channelWrapOrUpper(a)
     );
-  }
-
-  static _channelWrap(channel) {
-    return clamp(channel, CHANNEL_LIMIT_LOWER, CHANNEL_LIMIT_UPPER);
-  }
-
-  static _channelWrapOrLower(channel = CHANNEL_LIMIT_LOWER) {
-    return RGBA._channelWrap(channel);
-  }
-
-  static _channelWrapOrUpper(channel = CHANNEL_LIMIT_UPPER) {
-    return RGBA._channelWrap(channel);
-  }
-
-  /**
-   *
-   * @param { [number | void, number | void, number | void, number | void] } rgbaTuple
-   * @returns
-   */
-  static createFromRGBATuple([r, g, b, a]) {
-    return RGBA._createRGBA(r, g, b, a);
   }
 
   /**
    *
    * @param { { r: number | void, g: number | void, b: number | void, a: number | void } } rgbaChannels
-   * @returns
    */
   static createFromRGBAChannels({ r, g, b, a }) {
     return RGBA._createRGBA(r, g, b, a);
+  }
+
+  static #channelWrapOrLower(channel = CHANNEL_LIMIT_LOWER) {
+    return RGBA.#channelWrap(channel);
+  }
+
+  static #channelWrapOrUpper(channel = CHANNEL_LIMIT_UPPER) {
+    return RGBA.#channelWrap(channel);
+  }
+
+  static #channelWrap(channel) {
+    return clamp(channel, CHANNEL_LIMIT_LOWER, CHANNEL_LIMIT_UPPER);
   }
 
   get r() {
@@ -72,30 +62,24 @@ export class RGBA {
   }
 
   /**
-   * @returns { [number, number, number, number] }
+   *
+   * @param {(component: number) => number} mapper
    */
-  get rgbaTuple() {
-    return [this.r, this.g, this.b, this.a];
-  }
-
-  get rgbaChannels() {
-    return {
-      r: this.r,
-      g: this.g,
-      b: this.b,
-      a: this.a,
-    };
+  mapComponents(mapper) {
+    return RGBA.create(
+      mapper(this.#a),
+      mapper(this.#b),
+      mapper(this.#g),
+      mapper(this.#a)
+    );
   }
 
   /**
    *
    * @param {number} coefficient
-   * @returns
    */
   multiplicateIntensity(coefficient) {
-    return RGBA.createFromRGBATuple(
-      this.rgbaTuple.map((channel) => channel * coefficient)
-    );
+    return this.mapComponents((component) => component * coefficient);
   }
 
   /**
@@ -104,7 +88,7 @@ export class RGBA {
    * @returns
    */
   addColor(color) {
-    const [r, g, b, a] = color.rgbaTuple;
-    return RGBA._createRGBA(this.r + r, this.g + g, this.b + b, this.a + a);
+    const { r, g, b, a } = color;
+    return RGBA.create(this.r + r, this.g + g, this.b + b, this.a + a);
   }
 }
