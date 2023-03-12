@@ -3,7 +3,6 @@
  * @param {number} a
  * @param {number} b
  * @param {number} c
- * @returns
  */
 export const quadraticEquationSolve = (a, b, c) => {
   const discriminant = _calculateDiscriminant(a, b, c);
@@ -15,10 +14,8 @@ export const quadraticEquationSolve = (a, b, c) => {
   const isOnlyOneSolution = countRoots == 1;
   const distance = Math.sqrt(discriminant);
   const x1 = _calculateRoot(a, b, distance);
-  let x2 = 0;
-  if (isOnlyOneSolution) {
-    x2 = x1;
-  } else {
+  let x2 = x1;
+  if (!isOnlyOneSolution) {
     x2 = _calculateRoot(a, b, -distance);
   }
   return { x1, x2, isOnlyOneSolution };

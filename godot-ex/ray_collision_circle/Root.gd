@@ -5,7 +5,7 @@ const CIRCLE = {
 	"radius": 45,
 }
 const RAY = {
-	"position": Vector2(700, 200),
+	"position": Vector2(500, 330),
 }
 
 # Функция рисования луча (имитирует бесконечный луч, только в направлении от точки)
@@ -96,18 +96,19 @@ func _draw():
 	if res.size() == 0:
 		return;
 		
-	# Луч является бесконечным, поэтому мы так же увидим пересечение с синей частью луча
-	if sign(res[0]) == -1 || sign(res[1]) == -1:
-		return
-	
 	print('Collision t is ', res)
 	
-	var m_min = min(res[0], res[1])
-	var m_max = max(res[0], res[1])
+	if (abs(res[0]) > abs(res[1])):
+		var tmp = res[0]
+		res[0] = res[1]
+		res[1] = tmp
+	
+	var m_min = res[0]
+	var m_max = res[1]
 	
 	# точки столкновения луча с окружностью
 	var mp_min = Vector2(m_min * rdx + rx0, m_min * rdy + ry0) # ближняя
 	var mp_max = Vector2(m_max * rdx + rx0, m_max * rdy + ry0) # дальняя
 	
 	draw_circle(mp_min, 4, Color(255, 255, 0))
-	draw_circle(mp_max, 4, Color(0, 0, 255))
+	draw_circle(mp_max, 8, Color(0, 0, 255))

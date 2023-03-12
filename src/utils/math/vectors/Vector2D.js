@@ -37,7 +37,7 @@ export class Vector2D {
    * @param {Vector2D} vector2D
    */
   addVector2D(vector2D) {
-    return Vector2D.create(this.#x + vector2D.x, this.#y + vector2D.y);
+    return new Vector2D(this.#x + vector2D.x, this.#y + vector2D.y);
   }
 
   /**
@@ -45,7 +45,7 @@ export class Vector2D {
    * @param {Vector2D} vector2D
    */
   subVector2D(vector2D) {
-    return Vector2D.create(this.#x - vector2D.x, this.#y - vector2D.y);
+    return new Vector2D(this.#x - vector2D.x, this.#y - vector2D.y);
   }
 
   /**
@@ -53,7 +53,7 @@ export class Vector2D {
    * @param {number} scalar
    */
   addScalar(scalar) {
-    return Vector2D.create(this.#x + scalar, this.#y + scalar);
+    return new Vector2D(this.#x + scalar, this.#y + scalar);
   }
 
   /**
@@ -61,7 +61,7 @@ export class Vector2D {
    * @param {number} scalar
    */
   subScalar(scalar) {
-    return Vector2D.create(this.#x - scalar, this.#y - scalar);
+    return new Vector2D(this.#x - scalar, this.#y - scalar);
   }
 
   /**
@@ -69,7 +69,7 @@ export class Vector2D {
    * @param {number} scalar
    */
   multiplicateScalar(scalar) {
-    return Vector2D.create(this.#x * scalar, this.#y * scalar);
+    return new Vector2D(this.#x * scalar, this.#y * scalar);
   }
 
   /**
@@ -77,15 +77,15 @@ export class Vector2D {
    * @param {number} scalar
    */
   divideScalar(scalar) {
-    return Vector2D.create(this.#x / scalar, this.#y / scalar);
+    return new Vector2D(this.#x / scalar, this.#y / scalar);
   }
 
   /**
    *
    * @param {(component: number) => number} mapper
    */
-  mapComponents(mapper) {
-    return Vector2D.create(mapper(this.#x), mapper(this.#y));
+  map(mapper) {
+    return new Vector2D(mapper(this.#x), mapper(this.#y));
   }
 
   /**

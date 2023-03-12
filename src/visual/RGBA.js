@@ -65,7 +65,7 @@ export class RGBA {
    *
    * @param {(component: number) => number} mapper
    */
-  mapComponents(mapper) {
+  map(mapper) {
     return RGBA.create(
       mapper(this.#a),
       mapper(this.#b),
@@ -79,13 +79,12 @@ export class RGBA {
    * @param {number} coefficient
    */
   multiplicateIntensity(coefficient) {
-    return this.mapComponents((component) => component * coefficient);
+    return this.map((component) => component * coefficient);
   }
 
   /**
    *
    * @param {RGBA} color
-   * @returns
    */
   addColor(color) {
     const { r, g, b, a } = color;

@@ -1,4 +1,4 @@
-import { Vector3D } from "../../utils";
+import { Vector3D } from "../../../utils";
 
 export class Ray {
   /** @type {Vector3D} */
@@ -13,12 +13,12 @@ export class Ray {
   }
 
   /**
-   * 
-   * @param {Vector3D} position 
-   * @param {Vector3D} direction 
+   *
+   * @param {Vector3D} position
+   * @param {Vector3D} direction
    */
   static create(position, direction) {
-    return new Ray(position, direction);
+    return new Ray(position, direction.normalize());
   }
 
   get position() {
@@ -27,5 +27,15 @@ export class Ray {
 
   get direction() {
     return this.#direction;
+  }
+
+  /**
+   *
+   * @param {number} offset
+   */
+  positionAlongDirection(offset) {
+    return this.#position.addVector3D(
+      this.#direction.multiplicateScalar(offset)
+    );
   }
 }

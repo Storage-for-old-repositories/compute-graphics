@@ -45,7 +45,7 @@ export class Vector3D {
    * @param {Vector3D} vector3D
    */
   addVector3D(vector3D) {
-    return Vector3D.create(
+    return new Vector3D(
       this.#x + vector3D.x,
       this.#y + vector3D.y,
       this.#z + vector3D.z
@@ -57,7 +57,7 @@ export class Vector3D {
    * @param {Vector3D} vector3D
    */
   subVector3D(vector3D) {
-    return Vector3D.create(
+    return new Vector3D(
       this.#x - vector3D.x,
       this.#y - vector3D.y,
       this.#z - vector3D.z
@@ -69,11 +69,7 @@ export class Vector3D {
    * @param {number} scalar
    */
   addScalar(scalar) {
-    return Vector3D.create(
-      this.#x + scalar,
-      this.#y + scalar,
-      this.#z + scalar
-    );
+    return new Vector3D(this.#x + scalar, this.#y + scalar, this.#z + scalar);
   }
 
   /**
@@ -81,11 +77,7 @@ export class Vector3D {
    * @param {number} scalar
    */
   subScalar(scalar) {
-    return Vector3D.create(
-      this.#x - scalar,
-      this.#y - scalar,
-      this.#z + scalar
-    );
+    return new Vector3D(this.#x - scalar, this.#y - scalar, this.#z + scalar);
   }
 
   /**
@@ -93,11 +85,7 @@ export class Vector3D {
    * @param {number} scalar
    */
   multiplicateScalar(scalar) {
-    return Vector3D.create(
-      this.#x * scalar,
-      this.#y * scalar,
-      this.#z * scalar
-    );
+    return new Vector3D(this.#x * scalar, this.#y * scalar, this.#z * scalar);
   }
 
   /**
@@ -105,28 +93,24 @@ export class Vector3D {
    * @param {number} scalar
    */
   divideScalar(scalar) {
-    return Vector3D.create(
-      this.#x / scalar,
-      this.#y / scalar,
-      this.#z / scalar
-    );
+    return new Vector3D(this.#x / scalar, this.#y / scalar, this.#z / scalar);
   }
 
   /**
    *
    * @param {(component: number) => number} mapper
    */
-  mapComponents(mapper) {
-    return Vector3D.create(mapper(this.#x), mapper(this.#y), mapper(this.#z));
+  map(mapper) {
+    return new Vector3D(mapper(this.#x), mapper(this.#y), mapper(this.#z));
   }
 
-    /**
+  /**
    *
    * @param {Vector3D} vector3D
    */
-    dotProduct(vector3D) {
-      return this.#x * vector3D.x + this.#y * vector3D.y + this.#z * vector3D.z;
-    }
+  dotProduct(vector3D) {
+    return this.#x * vector3D.x + this.#y * vector3D.y + this.#z * vector3D.z;
+  }
 
   length() {
     return Math.sqrt(this.dotProduct(this));
